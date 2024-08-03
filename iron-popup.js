@@ -1,14 +1,16 @@
 // Tạo popup
 const popup = document.createElement('div');
 
+// Hàm để lấy root URL của website
 function getRootURL() {
-    const { hostname } = window.location;
-    return hostname`;
+    const {  hostname } = window.location;
+    return hostname;
 }
 
+// Hàm để lấy settings từ backend
 async function fetchSettings(shop) {
     try {
-        const response = await fetch(`/popup-settings/${shop}`);
+        const response = await fetch(`https://kentvps.io.vn/popup-settings/${shop}`);
         const settings = await response.json();
         return settings;
     } catch (error) {
@@ -17,17 +19,20 @@ async function fetchSettings(shop) {
     }
 }
 
+// Hàm để khởi tạo popup với settings từ backend
 async function initPopup() {
     const shop = getRootURL();
     const settings = await fetchSettings(shop);
 
     // Giá trị mặc định nếu không có settings từ backend
     const defaultSettings = {
-        backgroundColor: '#f1f1f1',
-        textColor: '#000000',
+        backgroundColor: '#ffffff',
+        textColor: '#333333',
         borderRadius: '5px',
-        title: 'Welcome to our website!',
-        content: 'This is the popup content.'
+        imageUrl: 'https://via.placeholder.com/50',
+        location: 'San Francisco',
+        productName: 'MEN COTTON BAG',
+        timeAgo: '4 minutes ago'
     };
 
     // Sử dụng settings từ backend nếu có, nếu không dùng giá trị mặc định
@@ -38,25 +43,37 @@ async function initPopup() {
             position: fixed;
             bottom: 20px;
             left: 20px;
-            width: 300px;
-            padding: 20px;
+            width: 320px;
+            padding: 10px;
             background-color: ${finalSettings.backgroundColor};
             color: ${finalSettings.textColor};
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             border-radius: ${finalSettings.borderRadius};
             z-index: 1000;
+            display: flex;
+            align-items: center;
+            font-family: Arial, sans-serif;
         ">
-            <p style="margin: 0;">${finalSettings.title}</p>
-            <div>${finalSettings.content}</div>
+            <img src="${finalSettings.imageUrl}" alt="Product Image" style="
+                width: 50px;
+                height: 50px;
+                margin-right: 10px;
+                border-radius: 5px;
+            ">
+            <div style="flex-grow: 1;">
+                <p style="margin: 0; font-size: 12px;">Someone in ${finalSettings.location} just bought</p>
+                <p style="margin: 0; font-size: 14px; font-weight: bold;">${finalSettings.productName}</p>
+                <p style="margin: 0; font-size: 12px; color: #888;">${finalSettings.timeAgo}</p>
+            </div>
             <button id="close-popup" style="
-                margin-top: 10px;
-                padding: 5px 10px;
-                background-color: #007BFF;
-                color: white;
+                background: none;
                 border: none;
-                border-radius: 3px;
+                font-size: 16px;
+                color: #888;
                 cursor: pointer;
-            ">Close</button>
+                padding: 0;
+                margin-left: 10px;
+            ">&times;</button>
         </div>
     `;
 
