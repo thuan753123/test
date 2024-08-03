@@ -85,4 +85,4 @@ async function initPopup() {
 }
 
 // Khởi chạy popup khi trang được tải
-window.onload = initPopup;
+document.addEventListener('DOMContentLoaded', initPopup);
